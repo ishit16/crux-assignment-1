@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ParentContainer from "../../hoc/Layout";
 import { FileUpload } from "../fileupload/FileUpload";
-import { AddRoleForm } from "../addRole/AddRoleModel";
+import { AddRoleForm } from "../addRole/AddRoleModal";
 
 export const HomeContainer = () => {
   const [showAddRole, setShowAddRole] = useState(false);
