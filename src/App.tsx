@@ -2,15 +2,17 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { HomePage } from "./pages/Home";
 import { FilteredCandidates } from "./pages/FilteredCandidates";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <RecoilRoot>
       <Router>
         <Routes>
-          <Route path="/f" element={<HomePage />}></Route>
-          <Route path="/" element={<FilteredCandidates />}></Route>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/f" element={<FilteredCandidates />}></Route>
         </Routes>
+        <Toaster />
       </Router>
     </RecoilRoot>
   );

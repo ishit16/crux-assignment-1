@@ -12,12 +12,22 @@ export const FileUpload = () => {
 
   const handleUpload = async () => {
     // const UPLOAD_URL = "YOUR URL HERE";
-    const UPLOAD_URL = "/api/upload";
+    const UPLOAD_URL = "http://localhost:8000/upload/";
     const data = new FormData();
+
     for (let file of fileList!) {
+      console.log(file);
       data.append(file.name, file);
     }
-    await axios.post(UPLOAD_URL, data);
+    try {
+      console.log([...data.keys()]);
+
+      const response = await axios.post(UPLOAD_URL, data);
+      console.log(response); // Log the response if needed
+      setFileList([]); // Clear fileList after successful upload
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
   };
 
   return (
