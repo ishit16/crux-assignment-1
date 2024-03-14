@@ -10,7 +10,10 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />}></Route>
-          <Route path="/f" element={<FilteredCandidates />}></Route>
+          <Route
+            path="/filtered-candidates"
+            element={<FilteredCandidates />}
+          ></Route>
         </Routes>
         <Toaster />
       </Router>

@@ -1,33 +1,16 @@
 import { CloudArrowUpIcon } from "@heroicons/react/24/outline";
-import React, { useRef, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { AddRoleForm } from "../addRole/AddRoleModal";
+
 export const FileUpload = () => {
   const [fileList, setFileList] = useState<File[] | null>(null);
+  //@ts-ignore
   const [shouldHighlight, setShouldHighlight] = useState(false);
+  const [showAddRole, setShowAddRole] = useState(false);
 
   const preventDefaultHandler = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-  };
-
-  const handleUpload = async () => {
-    // const UPLOAD_URL = "YOUR URL HERE";
-    const UPLOAD_URL = "http://localhost:8000/upload/";
-    const data = new FormData();
-
-    for (let file of fileList!) {
-      console.log(file);
-      data.append(file.name, file);
-    }
-    try {
-      console.log([...data.keys()]);
-
-      const response = await axios.post(UPLOAD_URL, data);
-      console.log(response); // Log the response if needed
-      setFileList([]); // Clear fileList after successful upload
-    } catch (error) {
-      console.error("Error uploading files:", error);
-    }
   };
 
   return (
@@ -69,10 +52,10 @@ export const FileUpload = () => {
               })}
               <div className="flex gap-2 mt-2">
                 <button
-                  onClick={handleUpload}
+                  onClick={() => setShowAddRole(true)}
                   className="bg-violet-500 text-violet-50 px-2 py-1 rounded-md"
                 >
-                  Upload
+                  Add Role and Upload
                 </button>
                 <button
                   className="border border-violet-500 px-2 py-1 rounded-md"
@@ -83,6 +66,16 @@ export const FileUpload = () => {
                   Clear
                 </button>
               </div>
+              {showAddRole ? (
+                <AddRoleForm
+                  fileList={fileList}
+                  setFileList={setFileList}
+                  open={showAddRole}
+                  setOpen={setShowAddRole}
+                />
+              ) : (
+                <></>
+              )}
             </>
           )}
         </div>
