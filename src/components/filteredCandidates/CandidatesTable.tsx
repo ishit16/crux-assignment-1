@@ -1,17 +1,17 @@
-import { useRecoilValue } from "recoil";
 import { CandidateTableRow } from "./CandidateRow";
-import { resumeObjectsState } from "../../atoms/resume_uploads";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const CandidatesTable = () => {
-  const resumeObjects = useRecoilValue(resumeObjectsState);
+export const CandidatesTable = ({ resumeObjects }: any) => {
   const navigate = useNavigate();
+  console.log(resumeObjects);
+
   useEffect(() => {
-    if (resumeObjects.length == 0) {
+    if (!Array.isArray(resumeObjects) && resumeObjects.length === 0) {
       navigate("/");
     }
-  });
+  }, [resumeObjects, navigate]);
+
   return (
     <>
       <div className="container px-4 sm:px-8">
@@ -39,35 +39,34 @@ export const CandidatesTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {resumeObjects.map((resume: any, index: number) => {
-                    const fullName = resume["resume_object"]["name"];
-                    const nameParts = fullName.split(" ");
+                  {Array.isArray(resumeObjects) &&
+                    resumeObjects.map((resume: any, index: number) => {
+                      const fullName = resume["resume_object"]["name"];
+                      const nameParts = fullName.split(" ");
 
-                    // Extract the initials of the first and last names
-                    const firstNameInitial = nameParts[0]
-                      .charAt(0)
-                      .toUpperCase();
-                    const lastNameInitial = nameParts[nameParts.length - 1]
-                      .charAt(0)
-                      .toUpperCase();
+                      // Extract the initials of the first and last names
+                      const firstNameInitial = nameParts[0]
+                        .charAt(0)
+                        .toUpperCase();
+                      const lastNameInitial = nameParts[nameParts.length - 1]
+                        .charAt(0)
+                        .toUpperCase();
 
-                    // Concatenate the initials
-                    const initials = `${firstNameInitial}${lastNameInitial}`;
-                    return (
-                      <CandidateTableRow
-                        key={index}
-                        initials={initials} // Update with actual image URL
-                        name={fullName}
-                        relevancy_score={
-                          resume["resume_object"]["projects"][0][
-                            "relevancy_score"
-                          ]
-                        } // Assuming relevancy_score is in projects array's first item
-                        resume_link="Link to resume" // Update with actual resume link
-                        details="Details" // Update with actual details
-                      />
-                    );
-                  })}
+                      // Concatenate the initials
+                      const initials = `${firstNameInitial}${lastNameInitial}`;
+                      return (
+                        <CandidateTableRow
+                          key={index}
+                          initials={initials} // Update with actual image URL
+                          name={fullName}
+                          relevancy_score={
+                            resume["resume_object"]["overall_relevancy_score"]
+                          } // Assuming relevancy_score is in projects array's first item
+                          resume_link={resume.download_url} // Update with actual resume link
+                          details={resume} // Update with actual details
+                        />
+                      );
+                    })}
                 </tbody>
               </table>
             </div>

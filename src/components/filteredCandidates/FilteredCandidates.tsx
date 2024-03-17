@@ -8,12 +8,20 @@ import { useNavigate } from "react-router-dom";
 export const FilteredCandidatesContainer = () => {
   const resumeObjects = useRecoilValue(resumeObjectsState);
   const navigate = useNavigate();
+  console.log(resumeObjects.length);
   useEffect(() => {
-    if (resumeObjects.length == 0) {
+    if (resumeObjects.length === 0) {
       navigate("/");
     }
-  });
-  //@ts-ignore
+  }, [navigate, resumeObjects]);
+
+  // Filter recommended and not recommended candidates
+  const recommendedCandidates = resumeObjects.filter(
+    (resume: any) => resume.resume_object.overall_relevancy_score > 3
+  );
+  const notRecommendedCandidates = resumeObjects.filter(
+    (resume: any) => resume.resume_object.overall_relevancy_score <= 3
+  );
 
   return (
     <ParentContainer>
@@ -22,23 +30,23 @@ export const FilteredCandidatesContainer = () => {
         <span className="text-normal text-gray-700">Software Engineer</span>
         <div className="border-t mt-8 border-gray-300"></div>
       </div>
-      <div className="flex flex-col md:flex-row md:px-24  justify-between items-center md:items-start mt-8">
+      <div className="flex flex-col md:flex-row md:px-24 justify-between items-center md:items-start mt-8">
         <span className="text-gray-700 font-bold text-3xl md:py-16 mb-4 md:mb-0">
           Recommended Profiles
         </span>
         <div>
-          <CandidatesTable />
+          <CandidatesTable resumeObjects={recommendedCandidates} />
         </div>
       </div>
       <div className="px-12">
         <div className="border-t mt-8 border-gray-300"></div>
       </div>
-      <div className="flex flex-col md:flex-row md:px-24  justify-between items-center md:items-start mt-8">
+      <div className="flex flex-col md:flex-row md:px-24 justify-between items-center md:items-start mt-8">
         <span className="text-gray-700 font-bold text-3xl md:py-16 mb-4 md:mb-0">
           Not Recommended Profiles
         </span>
         <div>
-          <CandidatesTable />
+          <CandidatesTable resumeObjects={notRecommendedCandidates} />
         </div>
       </div>
     </ParentContainer>

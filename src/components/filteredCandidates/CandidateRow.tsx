@@ -10,6 +10,16 @@ export const CandidateTableRow = ({
 }: any) => {
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
 
+  const handleDownloadResume = () => {
+    // Create an anchor element
+    const link = document.createElement("a");
+    link.href = resume_link;
+    link.download = "resume.jpg"; // Set the default download filename, adjust as needed
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       <tr>
@@ -29,7 +39,13 @@ export const CandidateTableRow = ({
           <p className="text-gray-900 whitespace-no-wrap">{relevancy_score}</p>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-          <p className="text-gray-900 whitespace-no-wrap">{resume_link}</p>
+          {/* Render the "Download Resume" link */}
+          <button
+            onClick={handleDownloadResume}
+            className="text-blue-500 hover:underline"
+          >
+            Download Resume
+          </button>
         </td>
         <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
           <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -41,13 +57,17 @@ export const CandidateTableRow = ({
               onClick={() => setOpenDetailsModal(true)}
               className="relative"
             >
-              {details}
+              Details
             </button>
           </span>
         </td>
       </tr>
       {openDetailsModal && (
-        <DetailsModal open={openDetailsModal} setOpen={setOpenDetailsModal} />
+        <DetailsModal
+          open={openDetailsModal}
+          setOpen={setOpenDetailsModal}
+          resume={details}
+        />
       )}
     </>
   );

@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { resumeObjectsState } from "../../atoms/resume_uploads";
 import DetailsContainer from "./DetailsContainer";
 
-export const DetailsModal = ({ open, setOpen }: any) => {
+export const DetailsModal = ({ open, setOpen, resume }: any) => {
   const [activeButton, setActiveButton] = useState("college");
-  const resumeObjects = useRecoilValue(resumeObjectsState);
+  console.log(resume);
   //@ts-ignore
-  const collegeDetails = resumeObjects[0]?.resume_object?.college_details;
+  const collegeDetails = resume?.resume_object?.college_details;
   //@ts-ignore
-  const profExp = resumeObjects[0]?.resume_object?.professional_experience;
+  const name = resume.resume_object?.name;
+  const profExp = resume.resume_object?.professional_experience;
+  const downloadLink = resume.download_url;
+  console.log(downloadLink);
   //@ts-ignore
-  const projects = resumeObjects[0]?.resume_object?.projects;
+  const projects = resume.resume_object?.projects;
   let activeData = {};
   if (activeButton === "college") {
     activeData = collegeDetails;
@@ -32,7 +33,7 @@ export const DetailsModal = ({ open, setOpen }: any) => {
                   IG
                 </div>{" "}
                 <span className="text-gray-700 font-semibold text-lg">
-                  Ishit Garg
+                  {name}
                 </span>
                 <p className="font-normal">email@iitb.ac.in</p>
               </div>
